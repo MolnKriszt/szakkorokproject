@@ -1,50 +1,40 @@
 <template>
   <main>
     <div class="row">
-      <div class="col-6">
+      <div class="col-md-6">
         <div class="container">
-          <table class="table table-striped table-hover">
-            <thead>
-              <tr>
-                <th class="my-table-header" scope="col">Név</th>
-                <th class="my-table-header" scope="col">Osztály</th>
-                <th class="my-table-header" scope="col">Szakkör</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(gyerek, i) in gyerekek" :key="i">
-                <td>{{ gyerek.nev }}</td>
-                <td>{{ gyerek.osztaly }}</td>
-                <td>
-                  <select
-                    class="form-select form-select-sm"
-                    aria-label="Small select example"
-                    v-model="gyerek.szakkorId"
-                    
-                  >
-                    <option
-                      v-for="(szakkor, i) in szakkorok"
-                      :key="i"
-                      :value="szakkor.id"
-                    >
-                      {{ szakkor.szakkor }}
-                    </option>
-                  </select>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="table-responsive">
+            <table class="table table-striped table-hover my-table">
+              <thead>
+                <tr>
+                  <th class="my-table-header my-nev" scope="col">Név</th>
+                  <th class="my-table-header" scope="col">Osztály</th>
+                  <th class="my-table-header" scope="col">Szakkör</th>
+                  <th class="my-table-header" scope="col"><i class="bi bi-header bi-shuffle" @click="RandomOsszesSzakkor()"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(gyerek, i) in gyerekek" :key="i">
+                  <td>{{ gyerek.nev }}</td>
+                  <td class="my-table-body">{{ gyerek.osztaly }}</td>
+                  <td class="my-table-body">
+                    <select class="form-select form-select-sm" aria-label="Small select example"
+                      v-model="gyerek.szakkorId">
+                      <option v-for="(szakkor, i) in szakkorok" :key="i" :value="szakkor.id">
+                        {{ szakkor.szakkor }}
+                      </option>
+                    </select>
+                  </td>
+                  <td class="my-table-body" @click="RandomEgySzakkor(gyerek.id)"><i class="bi bi-body bi-shuffle"></i></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
         </div>
       </div>
-      <div class="col-6">
-        <div class="">
-          <SzakkorComp
-            v-for="(szakkor, i) in szakkorok"
-            :key="i"
-            :szakkor="szakkor"
-            :gyerekek="gyerekek"
-          />
-        </div>
+      <div class="col-md-6">
+        <SzakkorComp v-for="(szakkor, i) in szakkorok" :key="i" :szakkor="szakkor" :gyerekek="gyerekek" />
       </div>
     </div>
   </main>
@@ -80,12 +70,80 @@ export default {
       ],
 
     };
+  },
+  methods: {
+    RandomEgySzakkor(gyerekid) {
+      const gyerek = this.gyerekek.find((g) => g.id === gyerekid);
+      gyerek.szakkorId = Math.floor(Math.random() * 4);
+    },
+    RandomOsszesSzakkor(){
+      for (const gyerek of this.gyerekek) {
+        gyerek.szakkorId = Math.floor(Math.random() * 4);
+      }
+    }
   }
 };
 </script>
 
 <style>
+.my-nev{
+  text-align: start !important;
+}
+
+.my-table-body {
+  text-align: center;
+}
+
+.bi-header {
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.bi-header::before {
+  transform: rotate(-180deg) !important;
+}
+
+.bi-body {
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: large;
+}
+
 .my-table-header {
-  color: #c94d3c !important;
+  color: var(--text-color) !important;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.table {
+  margin-top: 20px;
+}
+
+.table> :not(caption)>*>* {
+  background: var(--text-black-700);
+}
+
+
+.my-table {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.my-table thead th:first-child {
+  border-top-left-radius: 5px;
+}
+
+.my-table thead th:last-child {
+  border-top-right-radius: 5px;
+}
+
+.my-table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 5px;
+}
+
+.my-table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 5px;
 }
 </style>

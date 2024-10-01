@@ -35,8 +35,7 @@ export default {
 }
 
 h4{
-  
-  color: #C94D3C;
+  color: var(--text-color);
 }
 
 .my-card{
