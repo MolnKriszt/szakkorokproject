@@ -3,7 +3,6 @@
     <div class="row">
       <div class="col-md-6">
         <div class="container">
-
           <div class="table-responsive">
             <table class="table table-striped table-hover my-table">
               <thead>
@@ -21,30 +20,38 @@
               </thead>
               <tbody>
                 <tr v-for="(gyerek, i) in gyerekek" :key="i">
-                  <td class="table-font nevek">{{ gyerek.nev }}</td>
+                  <td
+                    class="table-font table-nevek"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                    @click="setModalStatusz('egygyerek')"
+                  >
+                    {{ gyerek.nev }}
+                  </td>
                   <td
                     class="my-table-body table-font osztalyok"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
+                    @click="setModalStatusz('osztalyok')"
                   >
                     {{ gyerek.osztaly }}
                   </td>
-                  <td
-                    class="my-table-body table-font d-flex justify-content-center"
-                  >
-                    <select
-                      class="form-select form-select-sm"
-                      aria-label="Small select example"
-                      v-model="gyerek.szakkorId"
-                    >
-                      <option
-                        v-for="(szakkor, i) in szakkorok"
-                        :key="i"
-                        :value="szakkor.id"
+                  <td class="my-table-body table-font">
+                    <div class="d-flex justify-content-center">
+                      <select
+                        class="form-select form-select-sm"
+                        aria-label="Small select example"
+                        v-model="gyerek.szakkorId"
                       >
-                        {{ szakkor.szakkor }}
-                      </option>
-                    </select>
+                        <option
+                          v-for="(szakkor, i) in szakkorok"
+                          :key="i"
+                          :value="szakkor.id"
+                        >
+                          {{ szakkor.szakkor }}
+                        </option>
+                      </select>
+                    </div>
                   </td>
                   <td
                     class="my-table-body table-font"
@@ -64,9 +71,14 @@
           :key="i"
           :szakkor="szakkor"
           :gyerekek="gyerekek"
+          @click="setModalStatusz('szakkor')"
         />
       </div>
-      <ModalCucc />
+      <ModalCucc
+        :szakkorok="szakkorok"
+        :gyerekek="gyerekek"
+        :modalStatusz="modalStatusz"
+      />
     </div>
   </main>
 </template>
@@ -103,9 +115,13 @@ export default {
         { id: 2, szakkor: "Balett" },
         { id: 3, szakkor: "Curling" },
       ],
+      modalStatusz: "",
     };
   },
   methods: {
+    setModalStatusz(statusz) {
+      this.modalStatusz = statusz;
+    },
     RandomEgySzakkor(gyerekid) {
       const gyerek = this.gyerekek.find((g) => g.id === gyerekid);
       gyerek.szakkorId = Math.floor(Math.random() * 4);
@@ -120,14 +136,22 @@ export default {
 </script>
 
 <style>
-.osztalyok:hover{
-transition: ease 0.3s;
-cursor: pointer;
-color: var(--text-color) !important;
+
+.table-nevek:hover{
+  transition: ease 0.3s;
+  color: var(--text-color) !important;
+  cursor: pointer;
+}
+
+
+.osztalyok:hover {
+  transition: ease 0.3s;
+  cursor: pointer;
+  color: var(--text-color) !important;
 }
 
 .form-select {
-  font-size: large;
+  font-size: medium;
   max-width: 150px;
   background-color: var(--text-black-700);
 }
@@ -146,12 +170,24 @@ color: var(--text-color) !important;
 }
 
 .bi-header {
+  color: var(--text-black-700);
+  font-size: 1.5rem;
+}
+
+.bi-header:hover{
+  transition: ease 0.3s;
   color: var(--text-color);
   cursor: pointer;
   font-size: 1.5rem;
 }
 
 .bi-body {
+  color: var(--text-black-700);
+  font-size: large;
+}
+
+.bi-body:hover{
+  transition: ease 0.3s;
   color: var(--text-color);
   font-size: large;
   cursor: pointer;
