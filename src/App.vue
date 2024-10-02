@@ -26,10 +26,11 @@ onMounted(() => {
   <header>
     <div class="container-fluid p-0">
       <!-- navbar -->
+       
       <nav class="navbar bg-body-tertiary my-navbar">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">
-            <i class="bi bi-person-circle my-bi"></i>
+            <i class="bi bi-person-circle my-bi ms-2"></i>
             <span class="ms-2 my-nav-text">Szakkörök</span>
           </a>
         </div>
@@ -42,9 +43,9 @@ onMounted(() => {
           @click="setActiveTheme('theme-green', '#37b18c')"
         ></div>
         <div
-          id="theme-blue"
-          :class="{ active: activeTheme === 'theme-blue' }"
-          @click="setActiveTheme('theme-blue', '#377ab1')"
+          id="theme-purple"
+          :class="{ active: activeTheme === 'theme-purple' }"
+          @click="setActiveTheme('theme-purple', '#9326ff')"
         ></div>
         <div
           id="theme-red"
@@ -111,8 +112,8 @@ body{
   background-color: #37b18c;
 }
 
-#theme-blue {
-  background-color: #377ab1;
+#theme-purple {
+  background-color: #9326ff;
 }
 
 #theme-red {

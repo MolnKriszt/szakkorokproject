@@ -6,7 +6,7 @@
         class="my-span"
         v-for="(gyerek, i) in GyerekekSzakkorben"
         :key="i">
-        {{ gyerek.nev }}<span v-if="i < GyerekekSzakkorben.length - 1">, </span>
+        <span class="nevek">{{ gyerek.nev }}</span><span class="separate" v-if="i < GyerekekSzakkorben.length - 1"> / </span>
       </span>
     </div>
   </div>
@@ -26,19 +26,32 @@ export default {
 </script>
 
 <style>
-.my-card-color {
-  background: #d7d6cd !important;
-}
 
-.my-box {
-  border: 1px dashed green;
-}
-
-h4{
+h4,h1,h2,h3,h5,h6{
   color: var(--text-color);
 }
 
 .my-card{
   margin-top: 20px;
+  background: var(--bg-black-100) !important;
+  border: solid 1px var(--text-color);
+}
+
+.my-span{
+  color: var(--text-black-700);
+  font-size: large;
+}
+
+.card-header{
+  border-bottom: solid 1px var(--text-color);
+}
+
+.separate{
+  color: var(--text-color);
+}
+
+.nevek:hover{
+  transition: ease 0.3s;
+  color: var(--text-color) !important;
 }
 </style>
