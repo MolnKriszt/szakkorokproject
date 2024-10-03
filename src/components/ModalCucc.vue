@@ -68,6 +68,30 @@
               </tbody>
             </table>
           </div>
+          
+          <!-- Szakkör állapot -->
+          <div v-if="this.modalStatusz == 'szakkor'">
+            <h2 @click="tesztlog()">Szakkör</h2>
+            <hr>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="my-th">Név</th>
+                  <th class="my-th">Osztály</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(gyerek,i) of this.gyerekszakkoralapjan(this.modalszakkor)" :key="i">
+                  <td class="my-td">{{ gyerek.nev }}</td>
+                  <td class="my-td">
+                    {{ gyerek.osztaly }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+
 
           <!-- Gyerek állapot -->
           <div v-if="this.modalStatusz == 'egygyerek'">
@@ -75,10 +99,6 @@
           </div>
 
 
-          <!-- Szakkör állapot -->
-          <div v-if="this.modalStatusz == 'szakkor'">
-            <h2>Szakkör</h2>
-          </div>
         </div>
       </div>
     </div>
@@ -96,13 +116,13 @@ export default {
   ],
   methods: {
     tesztlog() {
-      console.log(this.modalszakkor.szakkor);
+      console.log(this.gyerekszakkoralapjan(this.modalszakkor));
     },
     szakkoridalapjan(szakkorid) {
       return this.szakkorok.filter((sz) => sz.id == szakkorid)[0].szakkor;
     },
     gyerekszakkoralapjan(szakkor){
-
+      return this.gyerekek.filter((g) => g.szakkorId == szakkor.id)
     }
   },
 };

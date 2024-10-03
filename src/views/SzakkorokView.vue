@@ -131,6 +131,7 @@ export default {
     onClickSzakkor(szakkor){
       this.modalStatusz = "szakkor";
       this.modalszakkor = szakkor;
+      this.modalgyerekek = this.gyerekek;
     },
     onClickOsztaly(osztaly){
       this.modalStatusz = 'osztalyok';
