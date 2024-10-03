@@ -96,20 +96,20 @@ export default {
   data() {
     return {
       gyerekek: [
-        { id: 0, nev: "Jáger Kristóf", osztaly: "13.D", szakkorId: 0 },
-        { id: 1, nev: "Ledacs-Kiss Bence", osztaly: "13.D", szakkorId: 0 },
-        { id: 2, nev: "Fehér Dorián", osztaly: "13.D", szakkorId: 0 },
-        { id: 3, nev: "Medgyes Csaba", osztaly: "13.D", szakkorId: 0 },
-        { id: 4, nev: "Juhász Gergő", osztaly: "13.D", szakkorId: 0 },
-        { id: 5, nev: "Kovács János", osztaly: "13.D", szakkorId: 0 },
-        { id: 6, nev: "Polyák Alex", osztaly: "13.D", szakkorId: 0 },
-        { id: 7, nev: "Oláh Péter", osztaly: "13.D", szakkorId: 0 },
-        { id: 8, nev: "Fehér György", osztaly: "13.D", szakkorId: 0 },
-        { id: 9, nev: "Nagy Ferenc", osztaly: "13.D", szakkorId: 0 },
-        { id: 10, nev: "Hajdú István", osztaly: "13.D", szakkorId: 0 },
-        { id: 11, nev: "Molnár Krisztián", osztaly: "13.D", szakkorId: 0 },
-        { id: 12, nev: "Kocsis Bence", osztaly: "12.D", szakkorId: 0 },
-        { id: 13, nev: "Suki Zsolt", osztaly: "12.D", szakkorId: 0 },
+        { id: 0, nev: "Jáger Kristóf", osztaly: "13.D", szakkorId: 0, neme:null},
+        { id: 1, nev: "Ledacs-Kiss Bence", osztaly: "13.D", szakkorId: 0, neme:null},
+        { id: 2, nev: "Fehér Dorián", osztaly: "13.D", szakkorId: 0, neme:null },
+        { id: 3, nev: "Medgyes Csaba", osztaly: "13.D", szakkorId: 0, neme:null },
+        { id: 4, nev: "Juhász Gergő", osztaly: "13.D", szakkorId: 0, neme:null },
+        { id: 5, nev: "Kovács János", osztaly: "13.D", szakkorId: 0, neme:null },
+        { id: 6, nev: "Polyák Alex", osztaly: "13.D", szakkorId: 0, neme:null },
+        { id: 7, nev: "Oláh Péter", osztaly: "13.D", szakkorId: 0, neme:null },
+        { id: 8, nev: "Fehér György", osztaly: "13.D", szakkorId: 0, neme:null },
+        { id: 9, nev: "Nagy Ferenc", osztaly: "13.D", szakkorId: 0, neme:null },
+        { id: 10, nev: "Hajdú István", osztaly: "13.D", szakkorId: 0, neme:null },
+        { id: 11, nev: "Molnár Krisztián", osztaly: "13.D", szakkorId: 0, neme:null },
+        { id: 12, nev: "Kocsis Bence", osztaly: "12.D", szakkorId: 0, neme:null },
+        { id: 13, nev: "Suki Zsolt", osztaly: "12.D", szakkorId: 0, neme:null },
       ],
       szakkorok: [
         { id: 0, szakkor: "Nem jár szakkörre" },
@@ -127,6 +127,7 @@ export default {
     onClickGyerek(gyerek){
       this.modalStatusz = "egygyerek";
       this.modalgyerek = gyerek;
+      
     },
     onClickSzakkor(szakkor){
       this.modalStatusz = "szakkor";
@@ -149,11 +150,35 @@ export default {
         gyerek.szakkorId = Math.floor(Math.random() * 4);
       }
     },
+    async fetchGyerekNeme(gyerek) {
+      try {
+        const nevReszek = gyerek.nev.split(' ');
+        const keresztNev = nevReszek[1] || "unknown";
+
+        const response = await fetch(`https://api.genderize.io/?name=${keresztNev}&apikey={78dbff726215e8eb05389c549cb37e7d}`);
+        const data = await response.json();
+        gyerek.neme = data.gender || "unknown";
+      } catch (error) {
+        console.error("Hiba történt az API híváskor:", error);
+      }
+    },
+    async fetchAllGyerekNeme() {
+      for (const gyerek of this.gyerekek) {
+        await this.fetchGyerekNeme(gyerek);
+      }
+    },
+  },
+  mounted() {
+    this.fetchAllGyerekNeme(); 
   },
 };
 </script>
 
 <style>
+
+.white-txt{
+  color: var(--text-black-700);
+}
 
 .table-nevek:hover{
   transition: ease 0.3s;
@@ -230,20 +255,5 @@ export default {
   overflow: hidden;
   border: var(--text-color);
 }
-/* 
-.my-table thead th:first-child {
-  border-top-left-radius: 5px;
-}
 
-.my-table thead th:last-child {
-  border-top-right-radius: 5px;
-}
-
-.my-table tbody tr:last-child td:first-child {
-  border-bottom-left-radius: 5px;
-}
-
-.my-table tbody tr:last-child td:last-child {
-  border-bottom-right-radius: 5px;
-} */
 </style>

@@ -95,7 +95,15 @@
 
           <!-- Gyerek állapot -->
           <div v-if="this.modalStatusz == 'egygyerek'">
-            <h2>Egy gyerek</h2>
+            <div class="gender-icon-div d-flex justify-content-center">
+              <img v-if="modalgyerek.neme == 'male'" class="img-fluid my-pfp-img" src="/public/male-silhouette.png" alt="">
+              <img v-if="modalgyerek.neme == 'female'" class="img-fluid my-pfp-img" src="/public/female-silhouette.png" alt="">
+              <img v-if="modalgyerek.neme == 'unknown' || modalgyerek.neme == null" class="img-fluid my-pfp-img" src="/public/none-silhouette.png" alt="">
+            </div>
+            <div class="d-flex justify-content-between">
+              <h4>Osztály: <span class="white-txt">{{modalgyerek.osztaly}}</span> </h4>
+              <h4>Szakkör: <span class="white-txt">{{ szakkoridalapjan(modalgyerek.szakkorId) }}</span></h4>
+            </div>
           </div>
 
 
@@ -129,6 +137,11 @@ export default {
 </script>
 
 <style scoped>
+.my-pfp-img{
+  color: black;
+  margin-top: 5%;
+  max-width: 40%;
+}
 
 .modal-title {
   font-size: xx-large !important;
