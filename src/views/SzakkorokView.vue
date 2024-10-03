@@ -32,7 +32,7 @@
                     class="my-table-body table-font osztalyok"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
-                    @click="setModalStatusz('osztalyok')"
+                    @click="onClickOsztaly(gyerek.osztaly)"
                   >
                     {{ gyerek.osztaly }}
                   </td>
@@ -76,7 +76,7 @@
       </div>
       <ModalCucc
         :szakkorok="szakkorok"
-        :gyerekek="gyerekek"
+        :gyerekek="modalgyerekek"
         :modalStatusz="modalStatusz"
       />
     </div>
@@ -116,9 +116,16 @@ export default {
         { id: 3, szakkor: "Curling" },
       ],
       modalStatusz: "",
+      modalgyerekek:[],
     };
   },
   methods: {
+    onClickOsztaly(osztaly){
+      this.modalStatusz = 'osztalyok';
+      this.modalgyerekek = this.gyerekek.filter((g) => g.osztaly == osztaly)
+      console.log(this.modalgyerekek);
+      
+    },
     setModalStatusz(statusz) {
       this.modalStatusz = statusz;
     },

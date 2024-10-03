@@ -11,7 +11,7 @@
       <span class="my-span" v-for="(gyerek, i) in GyerekekSzakkorben" :key="i">
         <span class="nevek">{{ gyerek.nev }}</span
         ><span class="separate" v-if="i < GyerekekSzakkorben.length - 1">
-          /
+          |
         </span>
       </span>
     </div>
@@ -53,7 +53,7 @@ h6 {
 }
 
 .my-card {
-  margin-top: 20px;
+  margin: 20px 10px;
   background: var(--bg-black-100) !important;
   border: solid 1px var(--text-color);
 }
@@ -69,7 +69,16 @@ h6 {
 
 
 .separate {
+  display: inline-block;
   color: var(--text-color);
+  margin: 0px 10px;
+  transform: rotate(20deg);
+  transition: transform 0.3s ease; /* Animáció simábbá tétele */
+}
+
+/* Hover hatás a névre, ami elforgatja a mellette lévő | jeleket */
+.my-span:hover .separate {
+  transform: rotate(-20deg);
 }
 
 .nevek:hover {
