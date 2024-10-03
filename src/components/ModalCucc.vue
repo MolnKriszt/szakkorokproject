@@ -12,10 +12,32 @@
       <div class="modal-content">
         <div class="modal-header d-flex justify-content-between">
           <div>
-            <h1 class="modal-title fs-5" id="exampleModalLabel">
-              {{ gyerekek.length > 0 ? gyerekek[0].osztaly : "Nincs adat" }}
+            <h1
+              v-if="this.modalStatusz == 'osztalyok'"
+              class="modal-title fs-5"
+              id="exampleModalLabel"
+            >
+              {{
+                gyerekek.length > 0 ? gyerekek[0].osztaly : "Nincs adat"
+              }}
+              osztály
+            </h1>
+            <h1
+              v-if="this.modalStatusz == 'szakkor'"
+              class="modal-title fs-5"
+              id="exampleModalLabel"
+            >
+              {{ this.modalszakkor.szakkor }}
+            </h1>
+            <h1
+              v-if="this.modalStatusz == 'egygyerek'"
+              class="modal-title fs-5"
+              id="exampleModalLabel"
+            >
+              {{ modalgyerek.nev }}
             </h1>
           </div>
+
           <div>
             <i
               class="bi close-icon bi-x-lg"
@@ -27,8 +49,8 @@
         <div class="modal-body">
           <!-- Osztályok állpot -->
           <div v-if="this.modalStatusz == 'osztalyok'">
-            <h2>helo</h2>
-            <hr>
+            <h2>Leggyakoribb szakkor</h2>
+            <hr />
             <table class="table">
               <thead>
                 <tr>
@@ -37,9 +59,11 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-if="(gyerek) in this.gyerekek" :key="gyerek.id">
-                  <td>{{ gyerek.nev }}</td>
-                  <td>{{ gyerek.szakkorId }}</td>
+                <tr v-for="gyerek of this.gyerekek" :key="gyerek.id">
+                  <td class="my-td">{{ gyerek.nev }}</td>
+                  <td class="my-td">
+                    {{ szakkoridalapjan(gyerek.szakkorId) }}
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -49,6 +73,8 @@
           <div v-if="this.modalStatusz == 'egygyerek'">
             <h2>Egy gyerek</h2>
           </div>
+
+
           <!-- Szakkör állapot -->
           <div v-if="this.modalStatusz == 'szakkor'">
             <h2>Szakkör</h2>
@@ -61,21 +87,42 @@
 
 <script>
 export default {
-  props: ["szakkorok", "gyerekek", "modalStatusz"],
+  props: [
+    "szakkorok",
+    "gyerekek",
+    "modalStatusz",
+    "modalszakkor",
+    "modalgyerek",
+  ],
   methods: {
     tesztlog() {
-      console.log("teszt");
+      console.log(this.modalszakkor.szakkor);
     },
+    szakkoridalapjan(szakkorid) {
+      return this.szakkorok.filter((sz) => sz.id == szakkorid)[0].szakkor;
+    },
+    gyerekszakkoralapjan(szakkor){
+
+    }
   },
 };
 </script>
 
 <style scoped>
 
-hr{
+.modal-title {
+  font-size: xx-large !important;
+}
+
+hr {
   color: var(--text-color);
   font-size: large;
 }
+
+.my-td {
+  color: var(--text-black-700);
+}
+
 .my-th {
   color: var(--text-color);
 }

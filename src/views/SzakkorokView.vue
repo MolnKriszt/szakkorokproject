@@ -24,7 +24,7 @@
                     class="table-font table-nevek"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
-                    @click="setModalStatusz('egygyerek')"
+                    @click="onClickGyerek(gyerek)"
                   >
                     {{ gyerek.nev }}
                   </td>
@@ -71,13 +71,15 @@
           :key="i"
           :szakkor="szakkor"
           :gyerekek="gyerekek"
-          @click="setModalStatusz('szakkor')"
+          @click="onClickSzakkor(szakkor)"
         />
       </div>
       <ModalCucc
         :szakkorok="szakkorok"
         :gyerekek="modalgyerekek"
         :modalStatusz="modalStatusz"
+        :modalszakkor="modalszakkor"
+        :modalgyerek="modalgyerek"
       />
     </div>
   </main>
@@ -117,14 +119,22 @@ export default {
       ],
       modalStatusz: "",
       modalgyerekek:[],
+      modalszakkor:{},
+      modalgyerek:{},
     };
   },
   methods: {
+    onClickGyerek(gyerek){
+      this.modalStatusz = "egygyerek";
+      this.modalgyerek = gyerek;
+    },
+    onClickSzakkor(szakkor){
+      this.modalStatusz = "szakkor";
+      this.modalszakkor = szakkor;
+    },
     onClickOsztaly(osztaly){
       this.modalStatusz = 'osztalyok';
-      this.modalgyerekek = this.gyerekek.filter((g) => g.osztaly == osztaly)
-      console.log(this.modalgyerekek);
-      
+      this.modalgyerekek = this.gyerekek.filter((g) => g.osztaly == osztaly);
     },
     setModalStatusz(statusz) {
       this.modalStatusz = statusz;

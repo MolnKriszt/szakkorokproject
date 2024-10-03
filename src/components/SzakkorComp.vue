@@ -73,10 +73,9 @@ h6 {
   color: var(--text-color);
   margin: 0px 10px;
   transform: rotate(20deg);
-  transition: transform 0.3s ease; /* Animáció simábbá tétele */
+  transition: transform 0.3s ease; 
 }
 
-/* Hover hatás a névre, ami elforgatja a mellette lévő | jeleket */
 .my-span:hover .separate {
   transform: rotate(-20deg);
 }
