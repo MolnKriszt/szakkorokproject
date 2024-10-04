@@ -141,16 +141,6 @@ export default {
     setModalStatusz(statusz) {
       this.modalStatusz = statusz;
     },
-    RandomEgySzakkor(gyerekid) {
-      const gyerek = this.gyerekek.find((g) => g.id === gyerekid);
-      gyerek.szakkorId = this.szakkorok[Math.floor(Math.random() * this.szakkorok.length)].id;
-      
-    },
-    RandomOsszesSzakkor() {
-      for (const gyerek of this.gyerekek) {
-        gyerek.szakkorId = RandomSzkrId();
-      }
-    },
     async fetchGyerekNeme(gyerek) {
       try {
         const nevReszek = gyerek.nev.split(' ');
@@ -168,14 +158,22 @@ export default {
         await this.fetchGyerekNeme(gyerek);
       }
     },
-  },
-  mounted() {
-    // this.fetchAllGyerekNeme(); 
-  },
-  computed:{
+    RandomEgySzakkor(gyerekid) {
+      const gyerek = this.gyerekek.find((g) => g.id === gyerekid);
+      gyerek.szakkorId = this.RandomSzkrId();
+      
+    },
+    RandomOsszesSzakkor() {
+      for (const gyerek of this.gyerekek) {
+        gyerek.szakkorId = this.RandomSzkrId();
+      }
+    },
     RandomSzkrId(){
       return this.szakkorok[Math.floor(Math.random() * this.szakkorok.length)].id;
     }
+  },
+  mounted() {
+    // this.fetchAllGyerekNeme(); 
   }
 };
 </script>

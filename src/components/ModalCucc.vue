@@ -17,9 +17,7 @@
               class="modal-title fs-5"
               id="exampleModalLabel"
             >
-              {{
-                gyerekek.length > 0 ? gyerekek[0].osztaly : "Nincs adat"
-              }}
+              {{ gyerekek.length > 0 ? gyerekek[0].osztaly : "Nincs adat" }}
               osztály
             </h1>
             <h1
@@ -49,7 +47,9 @@
         <div class="modal-body">
           <!-- Osztályok állpot -->
           <div v-if="this.modalStatusz == 'osztalyok'">
-            <h2>Leggyakoribb szakkor</h2>
+            <h2 @click="leggyakoribbSzakkor()">
+              A leggyakoribb szakkor az osztályban:{{ leggyakoribbSzakkor() }} <span></span>
+            </h2>
             <hr />
             <table class="table">
               <thead>
@@ -68,11 +68,9 @@
               </tbody>
             </table>
           </div>
-          
+
           <!-- Szakkör állapot -->
           <div v-if="this.modalStatusz == 'szakkor'">
-            <h2 @click="tesztlog()">Szakkör</h2>
-            <hr>
             <table class="table">
               <thead>
                 <tr>
@@ -81,7 +79,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(gyerek,i) of this.gyerekszakkoralapjan(this.modalszakkor)" :key="i">
+                <tr
+                  v-for="(gyerek, i) of this.gyerekszakkoralapjan(
+                    this.modalszakkor
+                  )"
+                  :key="i"
+                >
                   <td class="my-td">{{ gyerek.nev }}</td>
                   <td class="my-td">
                     {{ gyerek.osztaly }}
@@ -91,22 +94,41 @@
             </table>
           </div>
 
-
-
           <!-- Gyerek állapot -->
           <div v-if="this.modalStatusz == 'egygyerek'">
             <div class="gender-icon-div d-flex justify-content-center">
-              <img v-if="modalgyerek.neme == 'male'" class="img-fluid my-pfp-img" src="/public/male-silhouette.png" alt="">
-              <img v-if="modalgyerek.neme == 'female'" class="img-fluid my-pfp-img" src="/public/female-silhouette.png" alt="">
-              <img v-if="modalgyerek.neme == 'unknown' || modalgyerek.neme == null" class="img-fluid my-pfp-img" src="/public/none-silhouette.png" alt="">
+              <img
+                v-if="modalgyerek.neme == 'male'"
+                class="img-fluid my-pfp-img"
+                src="/public/male-silhouette.png"
+                alt=""
+              />
+              <img
+                v-if="modalgyerek.neme == 'female'"
+                class="img-fluid my-pfp-img"
+                src="/public/female-silhouette.png"
+                alt=""
+              />
+              <img
+                v-if="modalgyerek.neme == 'unknown' || modalgyerek.neme == null"
+                class="img-fluid my-pfp-img"
+                src="/public/none-silhouette.png"
+                alt=""
+              />
             </div>
             <div class="d-flex justify-content-between">
-              <h4>Osztály: <span class="white-txt">{{modalgyerek.osztaly}}</span> </h4>
-              <h4>Szakkör: <span class="white-txt">{{ szakkoridalapjan(modalgyerek.szakkorId) }}</span></h4>
+              <h4>
+                Osztály:
+                <span class="white-txt">{{ modalgyerek.osztaly }}</span>
+              </h4>
+              <h4>
+                Szakkör:
+                <span class="white-txt">{{
+                  szakkoridalapjan(modalgyerek.szakkorId)
+                }}</span>
+              </h4>
             </div>
           </div>
-
-
         </div>
       </div>
     </div>
@@ -123,21 +145,44 @@ export default {
     "modalgyerek",
   ],
   methods: {
+    leggyakoribbSzakkor() {
+      let szakkorvissza = [];
+      let maxszakkor = 0;
+
+      for (const szakkor of this.szakkorok) {
+        let szakkorosszesen = 0;
+
+        for (const gyerek of this.gyerekek) {
+          if (gyerek.szakkorId == szakkor.id) {
+            szakkorosszesen++;
+          }
+        }
+
+        if (szakkorosszesen > maxszakkor) {
+          maxszakkor = szakkorosszesen;
+          szakkorvissza = [szakkor];
+        } else if (szakkorosszesen === maxszakkor) {
+          szakkorvissza.push(szakkor);
+        }
+      }
+      return szakkorvissza;
+    },
+
     tesztlog() {
       console.log(this.gyerekszakkoralapjan(this.modalszakkor));
     },
     szakkoridalapjan(szakkorid) {
       return this.szakkorok.filter((sz) => sz.id == szakkorid)[0].szakkor;
     },
-    gyerekszakkoralapjan(szakkor){
-      return this.gyerekek.filter((g) => g.szakkorId == szakkor.id)
-    }
+    gyerekszakkoralapjan(szakkor) {
+      return this.gyerekek.filter((g) => g.szakkorId == szakkor.id);
+    },
   },
 };
 </script>
 
 <style scoped>
-.my-pfp-img{
+.my-pfp-img {
   color: black;
   margin-top: 5%;
   max-width: 40%;
