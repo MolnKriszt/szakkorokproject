@@ -115,7 +115,7 @@ export default {
         { id: 0, szakkor: "Nem jár szakkörre" },
         { id: 1, szakkor: "Foci" },
         { id: 2, szakkor: "Balett" },
-        { id: 3, szakkor: "Curling" },
+        { id: 8, szakkor: "Curling" },
       ],
       modalStatusz: "",
       modalgyerekek:[],
@@ -143,11 +143,12 @@ export default {
     },
     RandomEgySzakkor(gyerekid) {
       const gyerek = this.gyerekek.find((g) => g.id === gyerekid);
-      gyerek.szakkorId = Math.floor(Math.random() * 4);
+      gyerek.szakkorId = this.szakkorok[Math.floor(Math.random() * this.szakkorok.length)].id;
+      
     },
     RandomOsszesSzakkor() {
       for (const gyerek of this.gyerekek) {
-        gyerek.szakkorId = Math.floor(Math.random() * 4);
+        gyerek.szakkorId = RandomSzkrId();
       }
     },
     async fetchGyerekNeme(gyerek) {
@@ -155,7 +156,7 @@ export default {
         const nevReszek = gyerek.nev.split(' ');
         const keresztNev = nevReszek[1] || "unknown";
 
-        const response = await fetch(`https://api.genderize.io/?name=${keresztNev}&apikey={78dbff726215e8eb05389c549cb37e7d}`);
+        const response = await fetch(`https://api.genderize.io/?name=${keresztNev}`);
         const data = await response.json();
         gyerek.neme = data.gender || "unknown";
       } catch (error) {
@@ -169,8 +170,13 @@ export default {
     },
   },
   mounted() {
-    this.fetchAllGyerekNeme(); 
+    // this.fetchAllGyerekNeme(); 
   },
+  computed:{
+    RandomSzkrId(){
+      return this.szakkorok[Math.floor(Math.random() * this.szakkorok.length)].id;
+    }
+  }
 };
 </script>
 
